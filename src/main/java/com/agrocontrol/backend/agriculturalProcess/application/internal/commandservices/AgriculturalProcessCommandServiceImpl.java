@@ -88,7 +88,7 @@ public class AgriculturalProcessCommandServiceImpl implements AgriculturalProces
         var subTotal = command.pricePerKg() * command.quantityInKg();
 
         this.externalFinanceService.createFinance(agriculturalProcess.getId(), "INCOME",
-                "Harvest day: " + command.date(), subTotal);
+                "Harvest day: " + command.date(), (double) subTotal);
 
         return Optional.ofNullable(updatedAgriculturalProcess.getLastActivityId());
     }
@@ -133,7 +133,7 @@ public class AgriculturalProcessCommandServiceImpl implements AgriculturalProces
         if (command.cost() > 0) {
             name = this.externalWorkerService.getWorkerNameById(command.resourceId());
             this.externalFinanceService.createFinance(agriculturalProcess.getId(), "EXPENSE",
-                    command.description(), command.cost());
+                    command.description(), (double) command.cost());
         } else if (command.quantity() > 0) {
             name = String.valueOf(this.externalStoreService.getProductNameById(command.resourceId()));
             this.externalStoreService.changeQuantityOfProduct(command.resourceId(), command.quantity());
